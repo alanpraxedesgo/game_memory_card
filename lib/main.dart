@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:game_memory_card/pages/game_page.dart';
 import 'package:game_memory_card/pages/home_page.dart';
+import 'package:game_memory_card/theme.dart';
 
 void main() {
   runApp(const MyApp());
@@ -14,10 +16,12 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Jogo da Memoria',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
-      home: const HomePage(),
+      theme: theme(),
+      initialRoute: '/home',
+      routes: {
+        '/home': (context) => HomePage(),
+        '/game': (context) => GamePage(),
+      },
     );
   }
 }
