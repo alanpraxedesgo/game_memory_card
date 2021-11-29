@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flip_card/flip_card.dart';
 import 'package:flutter/material.dart';
 import 'package:game_memory_card/constants.dart';
+import 'package:game_memory_card/pages/home_page.dart';
 
 int level = 12;
 
@@ -43,7 +44,7 @@ class _GamePageState extends State<GamePage> {
   }
 
   startTimer() {
-    timer = Timer.periodic(Duration(seconds: 1), (t) {
+    timer = Timer.periodic(const Duration(seconds: 1), (t) {
       setState(() {
         time = time + 1;
       });
@@ -82,16 +83,16 @@ class _GamePageState extends State<GamePage> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: primaryColor,
-        title: Text('Game'),
+        title: const Text('Game'),
       ),
       body: SafeArea(
         child: Column(
           children: [
             Padding(
-              padding: EdgeInsets.all(16),
+              padding: const EdgeInsets.all(16),
               child: Text(
                 "Tempo: ${intToTimeLeft(time)}",
-                style: TextStyle(
+                style: const TextStyle(
                   fontSize: 24,
                   fontWeight: FontWeight.bold,
                 ),
@@ -106,9 +107,9 @@ class _GamePageState extends State<GamePage> {
                       child: GridView.builder(
                           itemCount: data.length,
                           shrinkWrap: true,
-                          physics: NeverScrollableScrollPhysics(),
+                          physics: const NeverScrollableScrollPhysics(),
                           gridDelegate:
-                              SliverGridDelegateWithFixedCrossAxisCount(
+                              const SliverGridDelegateWithFixedCrossAxisCount(
                             crossAxisCount: 3,
                           ),
                           itemBuilder: (context, index) => FlipCard(
@@ -132,6 +133,7 @@ class _GamePageState extends State<GamePage> {
                                             .every((t) => t == false)) {
                                           print('terminou');
                                           cancelTimer();
+                                          showResult();
                                         }
                                       }
                                     }
@@ -140,16 +142,16 @@ class _GamePageState extends State<GamePage> {
                                 direction: FlipDirection.HORIZONTAL,
                                 flipOnTouch: cardFlips[index],
                                 front: Container(
-                                  margin: EdgeInsets.all(4.0),
+                                  margin: const EdgeInsets.all(4.0),
                                   color: Colors.deepOrange.withOpacity(0.3),
                                 ),
                                 back: Container(
-                                  margin: EdgeInsets.all(4.0),
+                                  margin: const EdgeInsets.all(4.0),
                                   color: Colors.deepOrange,
                                   child: Center(
                                     child: Text(
                                       "${data[index]}",
-                                      style: TextStyle(
+                                      style: const TextStyle(
                                         fontSize: 24,
                                         fontWeight: FontWeight.bold,
                                         color: Colors.white,
@@ -174,17 +176,18 @@ class _GamePageState extends State<GamePage> {
       context: context,
       barrierDismissible: false,
       builder: (context) => AlertDialog(
-        title: Text("Terminou!"),
+        title: const Text("Terminou!"),
         content: Text(
           "Tempo: ${intToTimeLeft(time)}",
-          style: TextStyle(
+          style: const TextStyle(
             fontSize: 24,
             fontWeight: FontWeight.bold,
           ),
         ),
         actions: <Widget>[
-          FlatButton(
+          TextButton(
             onPressed: () {
+              Navigator.of(context).pop();
               Navigator.of(context).pushReplacement(
                 MaterialPageRoute(
                   builder: (context) => GamePage(
@@ -192,9 +195,12 @@ class _GamePageState extends State<GamePage> {
                   ),
                 ),
               );
-              level *= 6;
+              level += 6;
             },
-            child: Text("NEXT"),
+            child: const Text(
+              "Proximo Level",
+              style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
+            ),
           ),
         ],
       ),
